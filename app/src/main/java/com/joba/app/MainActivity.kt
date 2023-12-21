@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun init() {
         url = "https://joba-frontend.netlify.app/"
         loading = findViewById(R.id.pb_loading)
