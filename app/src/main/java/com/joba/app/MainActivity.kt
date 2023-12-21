@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        url = "https://www.tracyvets.com/"
+        url = "https://joba-frontend.netlify.app/"
         loading = findViewById(R.id.pb_loading)
         webView = findViewById(R.id.wv_page)
     }
@@ -64,12 +64,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadWebview() {
-        webView.webViewClient = myWebclient()
+
+        val jsInjection =
+            "<html><head><script type='text/javascript'>localStorage.setItem('jewete', JSON.stringify({ id_user: '', fullname: '', email: '', address: '', number_phone: '', description: '' }));localStorage.setItem('accessToken', '');</script><script>window.location.replace('$url');</script></head><body></body></html>"
+
+        webView.loadData(jsInjection, "text/html", null)
+        webView.settings.domStorageEnabled = true
         webView.settings.javaScriptEnabled = true
-        webView.loadUrl(url)
+        webView.settings.allowContentAccess = true
+        webView.settings.allowFileAccess = true
+        webView.settings.allowFileAccessFromFileURLs = true
+        webView.webViewClient = MyWebclient()
     }
 
-    inner class myWebclient : WebViewClient() {
+    inner class MyWebclient : WebViewClient() {
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
             loading.visibility = View.GONE
